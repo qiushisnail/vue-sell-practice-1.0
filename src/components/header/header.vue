@@ -56,6 +56,7 @@
     position: relative
     color: #ffffff
     background: rgba(7, 17, 27, 0.5)
+    overflow: hidden
 
     & > .content-wrapper
       position: relative
@@ -134,6 +135,7 @@
         height: 24px
         background: rgba(0, 0, 0, 0.2)
         border-radius: 14px
+        text-align: center
 
         & > .count
           vertical-align: top
@@ -180,8 +182,8 @@
       position: absolute
       top: 0
       left: 0
-      z-index: -1
       width: 100%
       height: 100%
+      z-index: -1
       filter: blur(10px)
 </style>
