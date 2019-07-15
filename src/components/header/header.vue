@@ -21,23 +21,59 @@
           </span>
         </div>
       </div>
-      <div class="supports-count" v-if="seller.supports">
+      <div class="supports-count" v-if="seller.supports" @click="showDetail">
         <span class="count">{{seller.supports.length}}个</span>
         <i class="icon-keyboard_arrow_right"></i>
       </div>
     </div>
-    <div class="bulletin-wrapper">
+    <div class="bulletin-wrapper" @click="showDetail">
       <span class="icon"></span><span class="bulletin">{{seller.bulletin}}</span>
       <i class="icon-keyboard_arrow_right"></i>
     </div>
     <div class="background">
       <img width="100%" height="100%" :src="seller.avatar" alt="背景图">
     </div>
+    <div class="detail" v-show="showDetailInfo" transition="fade">
+      <div class="detail-wrapper clearfix">
+        <div class="detail-main">
+          <h1 class="name">{{seller.name}}</h1>
+          <div class="star-wrapper">
+            <star :size="48" :score="seller.score"></star>
+          </div>
+          <div class="title-wrapper">
+            <line text="优惠信息"></line>
+          </div>
+          <ul class="bulletin" v-if="seller.supports">
+            <li class="support-item" v-for="support in seller.supports" track-by="$index">
+              <span class="icon" :class="classMap[support.type]"></span>
+              <span class="description">{{support.description}}</span>
+            </li>
+          </ul>
+          <div class="title-wrapper">
+            <line text="商家公告"></line>
+          </div>
+          <div class="bulletin-info">
+            <p>{{seller.bulletin}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="detail-close">
+        <i class="icon-close" @click="closeDetail"></i>
+      </div>
+    </div>
   </div>
 </template>
 
 <script type="text/ecmascript-6">
+  import star from 'components/star/star'
+  import line from 'components/line/line'
+
   export default {
+    data() {
+      return {
+        showDetailInfo: false
+      }
+    },
     props: {
       seller: {
         type: Object
@@ -45,6 +81,18 @@
     },
     created() {
       this.classMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
+    },
+    methods: {
+      showDetail() {
+        this.showDetailInfo = true
+      },
+      closeDetail() {
+        this.showDetailInfo = false
+      }
+    },
+    components: {
+      star,
+      line
     }
   }
 </script>
@@ -186,4 +234,110 @@
       height: 100%
       z-index: -1
       filter: blur(10px)
+
+    & > .detail
+      position: fixed
+      top: 0
+      left: 0
+      z-index: 100
+      width: 100%
+      height: 100%
+      overflow: auto
+      text-align: center
+      transition: all 0.5s
+      backdrop-filter: blur(10px)
+
+      &.fade-transition
+        opacity: 1
+        background: rgba(7, 17, 27, 0.8)
+
+      &.fade-enter, &.fade-leave
+        opacity: 0
+        background: rgba(7, 17, 27, 0)
+
+      & > .detail-wrapper
+        width: 100%
+        min-height: 100%
+
+        & > .detail-main
+          margin-top: 64px
+          padding-bottom: 64px
+
+          & > .name
+            line-height: 16px
+            font-size: 16px
+            font-weight: bold
+
+          & > .star-wrapper
+            margin-top: 16px
+            padding: 2px 0
+
+          & > .title-wrapper
+            margin: 28px auto 24px auto
+            width: 80%
+
+          & > .bulletin
+            width: 80%
+            margin: 0 auto
+            text-align: left
+
+            & > .support-item
+              font-size: 0
+              padding: 0 12px
+              margin-bottom: 12px
+
+              &:last-child
+                margin-bottom: 0
+
+              & > .icon
+                display: inline-block
+                vertical-align: top
+                margin-right: 6px
+                width: 16px
+                height: 16px
+                background-size: 16px 16px
+                background-repeat: no-repeat
+
+                &.discount
+                  bg-image("discount_2")
+
+                &.decrease
+                  bg-image("decrease_2")
+
+                &.guarantee
+                  bg-image("guarantee_2")
+
+                &.invoice
+                  bg-image("invoice_2")
+
+                &.special
+                  bg-image("special_2")
+
+              & > .description
+                line-height: 16px
+                font-size: 12px
+                font-weight: 200
+
+          & > .bulletin-info
+            width: 80%
+            margin: 0 auto
+
+            & > p
+              padding: 0 12px
+              line-height: 24px
+              font-size: 12px
+              font-weight: 200
+              text-align: left
+
+      & > .detail-close
+        position: relative
+        width: 32px
+        height: 32px
+        margin: -64px auto 0 auto
+        clear: both
+
+        & > .icon-close
+          font-size: 32px
+          color: rgba(255, 255, 255, 0.8)
+
 </style>
