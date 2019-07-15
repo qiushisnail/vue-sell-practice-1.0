@@ -15,7 +15,7 @@
           {{seller.description}}/{{seller.deliveryTime}}分钟送达
         </div>
         <div class="supports" v-if="seller.supports">
-          <span class="icon" :class="classMap[seller.supports[0].type]"></span>
+          <icon class="icon" :category=1 :supporttype="seller.supports[0].type"></icon>
           <span class="description">
             {{seller.supports[0].description}}
           </span>
@@ -45,7 +45,7 @@
           </div>
           <ul class="bulletin" v-if="seller.supports">
             <li class="support-item" v-for="support in seller.supports" track-by="$index">
-              <span class="icon" :class="classMap[support.type]"></span>
+              <icon class="icon" :category=2 :supporttype="support.type"></icon>
               <span class="description">{{support.description}}</span>
             </li>
           </ul>
@@ -53,7 +53,7 @@
             <line text="商家公告"></line>
           </div>
           <div class="bulletin-info">
-            <p>{{seller.bulletin}}</p>
+            <p class="content">{{seller.bulletin}}</p>
           </div>
         </div>
       </div>
@@ -67,6 +67,7 @@
 <script type="text/ecmascript-6">
   import star from 'components/star/star'
   import line from 'components/line/line'
+  import icon from 'components/icon/icon'
 
   export default {
     data() {
@@ -92,7 +93,8 @@
     },
     components: {
       star,
-      line
+      line,
+      icon
     }
   }
 </script>
@@ -147,28 +149,7 @@
 
         & > .supports
           & > .icon
-            display: inline-block
-            vertical-align: top
             margin-right: 4px
-            width: 12px
-            height: 12px
-            background-size: 12px 12px
-            background-repeat: no-repeat
-
-            &.discount
-              bg-image("discount_1")
-
-            &.decrease
-              bg-image("decrease_1")
-
-            &.guarantee
-              bg-image("guarantee_1")
-
-            &.invoice
-              bg-image("invoice_1")
-
-            &.special
-              bg-image("special_1")
 
           & > .description
             line-height: 12px
@@ -290,28 +271,7 @@
                 margin-bottom: 0
 
               & > .icon
-                display: inline-block
-                vertical-align: top
                 margin-right: 6px
-                width: 16px
-                height: 16px
-                background-size: 16px 16px
-                background-repeat: no-repeat
-
-                &.discount
-                  bg-image("discount_2")
-
-                &.decrease
-                  bg-image("decrease_2")
-
-                &.guarantee
-                  bg-image("guarantee_2")
-
-                &.invoice
-                  bg-image("invoice_2")
-
-                &.special
-                  bg-image("special_2")
 
               & > .description
                 line-height: 16px
@@ -322,7 +282,7 @@
             width: 80%
             margin: 0 auto
 
-            & > p
+            & > .content
               padding: 0 12px
               line-height: 24px
               font-size: 12px
